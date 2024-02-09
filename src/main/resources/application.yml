@@ -1,0 +1,14 @@
+spring:
+    application:
+        name: sftp-auto-configurer
+
+logging:
+#    level:
+#        org:
+#            springframework:
+#                integration:
+#                    sftp: DEBUG
+    file:
+        name: src/main/resources/logs/${spring.application.name}.log
+
+
