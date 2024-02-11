@@ -1,7 +1,6 @@
 package dev.techsphere.sftpconfigurer.service;
 
 import dev.techsphere.sftpconfigurer.config.gateway.MessagingGateway;
-import dev.techsphere.sftpconfigurer.config.scheduler.SchedulerRegistry;
 import dev.techsphere.sftpconfigurer.config.sftp.IntegrationFlowRegistry;
 import dev.techsphere.sftpconfigurer.model.IntegrationFlowRequest;
 import dev.techsphere.sftpconfigurer.model.ServerInfoRequest;
@@ -22,7 +21,6 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,13 +54,7 @@ public class SFTPService {
         System.out.println("Transferring files to Remote:: Remote Dir -  " + remoteDir + "  Local Dir - " + localDir + "server name:: " + serverName);
 
         File files = new File(localDir);
-        File[] listFiles = files.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.matches(".*\\.json");
-            }
-        });
-
+        File[] listFiles = files.listFiles((dir, name) -> name.matches(".*\\.json"));
 
         String channelName = "outboundChannel-" + serverName;
         MessageChannel currentChannel = appContext.getBean(channelName, MessageChannel.class);
@@ -115,14 +107,11 @@ public class SFTPService {
     public void scheduleSFTPService(IntegrationFlowRequest request, String type) {
         ThreadPoolTaskScheduler exec = new ThreadPoolTaskScheduler();
         exec.initialize();
-        exec.schedule(new Runnable() {
-            @Override
-            public void run() {
-                if ("OUTBOUND".equalsIgnoreCase(type))
-                    transferFilesToRemote(request.getRemoteDir(), request.getLocalDir(), request.getTempDir(), request.getArchDir(), request.getServerName());
-                else if ("INBOUND".equalsIgnoreCase(type))
-                    copyFilesFromRemoteDir(request.getRemoteDir(), request.getLocalDir(), request.getServerName());
-            }
+        exec.schedule(() -> {
+            if ("OUTBOUND".equalsIgnoreCase(type))
+                transferFilesToRemote(request.getRemoteDir(), request.getLocalDir(), request.getTempDir(), request.getArchDir(), request.getServerName());
+            else if ("INBOUND".equalsIgnoreCase(type))
+                copyFilesFromRemoteDir(request.getRemoteDir(), request.getLocalDir(), request.getServerName());
         }, new CronTrigger(request.getSchedule()));
     }
 
