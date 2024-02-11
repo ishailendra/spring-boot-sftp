@@ -74,6 +74,7 @@ If a new server is needed to be added, then it should be added with the new inde
 Similarly, for adding new inbound/outbound flow next index value should be used and properties should be added in the above format.
 
 > **NOTE**
+> 
 >  After adding the properties a restart of the service is needed.
 
 ### Using Controller
