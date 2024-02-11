@@ -19,17 +19,17 @@ public class SFTPController {
     private SFTPService service;
 
     @PostMapping("/server")
-    public ResponseEntity<?> registerSessionFactory(@RequestBody ServerInfoRequest server) {
+    public ResponseEntity<String> registerSessionFactory(@RequestBody ServerInfoRequest server) {
         return new ResponseEntity<>(service.registerSessionFactory(server), HttpStatus.OK);
     }
 
     @PostMapping("/inbound")
-    public ResponseEntity<?> registerInbound(@RequestBody IntegrationFlowRequest request) {
+    public ResponseEntity<String> registerInbound(@RequestBody IntegrationFlowRequest request) {
         return new ResponseEntity<>(service.registerInboundFlow(request), HttpStatus.OK);
     }
 
     @PostMapping("/outbound")
-    public ResponseEntity<?> registerOutbound(@RequestBody IntegrationFlowRequest request) {
+    public ResponseEntity<String> registerOutbound(@RequestBody IntegrationFlowRequest request) {
         return new ResponseEntity<>(service.registerOutboundFlow(request), HttpStatus.OK);
     }
 }

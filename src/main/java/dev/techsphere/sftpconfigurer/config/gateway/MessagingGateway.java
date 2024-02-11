@@ -25,12 +25,12 @@ public class MessagingGateway {
     public List<File> downloadFiles(String remoteDirectory, String localDir, MessageChannel currentChannel) {
         Message<?> msg = MessageBuilder.withPayload(new Date()).setHeader("remote-target-dir", remoteDirectory).setHeader("local-target-dir", localDir).build();
         var result =  messagingTemplate.sendAndReceive(currentChannel, msg);
-        return (List<File>) result.getPayload();
+        return result != null && result instanceof Message ? (List<File>) result.getPayload() : null;
     }
 
     public Object uploadMultiFiles(String remoteDirectory, List<File> files, MessageChannel currentChannel) {
         Message<?> message = MessageBuilder.withPayload(files).setHeader("remote-target-dir", remoteDirectory).build();
         var result = messagingTemplate.sendAndReceive(currentChannel, message);
-        return result.getPayload();
+        return result != null && result instanceof Message ?  result.getPayload() : null;
     }
 }

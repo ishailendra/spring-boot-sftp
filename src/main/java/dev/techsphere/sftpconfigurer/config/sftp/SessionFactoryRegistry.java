@@ -40,7 +40,7 @@ public class SessionFactoryRegistry {
         }
         @Override
         public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-
+            //No implementation is needed as not using BeanDefinition to register new Beans
         }
 
         @Override
@@ -48,16 +48,16 @@ public class SessionFactoryRegistry {
 
             for (Map.Entry<String, Map<String, Object>> serverProps: server.entrySet()) {
                 try {
-                    Map<String, Object> server = serverProps.getValue();
+                    Map<String, Object> serverInfo = serverProps.getValue();
 
-                    String host = String.valueOf(server.get("host"));
-                    String portStr = String.valueOf(server.get("port"));
+                    String host = String.valueOf(serverInfo.get("host"));
+                    String portStr = String.valueOf(serverInfo.get("port"));
                     int port = NumberUtils.isParsable(portStr) ? Integer.parseInt(portStr) : 22;
-                    String user = String.valueOf(server.get("user"));
-                    String pwd = String.valueOf(server.get("password"));
-                    String privateKeyPath = String.valueOf(server.get("privateKeyPath"));
-                    String privateKeyPassphrase = String.valueOf(server.get("privateKeyPassphrase"));
-                    String serverName = String.valueOf(server.get("name"));
+                    String user = String.valueOf(serverInfo.get("user"));
+                    String pwd = String.valueOf(serverInfo.get("password"));
+                    String privateKeyPath = String.valueOf(serverInfo.get("privateKeyPath"));
+                    String privateKeyPassphrase = String.valueOf(serverInfo.get("privateKeyPassphrase"));
+                    String serverName = String.valueOf(serverInfo.get("name"));
 
                     SessionFactory<SftpClient.DirEntry> session = getSftpSessionFactory(host, port, user, pwd,privateKeyPath, privateKeyPassphrase);
 

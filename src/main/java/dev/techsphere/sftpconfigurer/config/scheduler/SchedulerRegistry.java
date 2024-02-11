@@ -1,6 +1,5 @@
 package dev.techsphere.sftpconfigurer.config.scheduler;
 
-import dev.techsphere.sftpconfigurer.model.IntegrationFlowRequest;
 import dev.techsphere.sftpconfigurer.service.SFTPService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.Binder;
@@ -41,12 +40,9 @@ public class SchedulerRegistry {
 
                     ThreadPoolTaskScheduler exec = new ThreadPoolTaskScheduler();
                     exec.initialize();
-                    exec.schedule(new Runnable() {
-                        @Override
-                        public void run() {
-                            service.copyFilesFromRemoteDir(inboundPropDetails.get("remoteDir"), inboundPropDetails.get("localDir"), serverName);
-                        }
-                    }, new CronTrigger(inboundPropDetails.get("schedule")));
+                    exec.schedule(() -> service.copyFilesFromRemoteDir(inboundPropDetails.get("remoteDir"),
+                                                                        inboundPropDetails.get("localDir"), serverName),
+                                        new CronTrigger(inboundPropDetails.get("schedule")));
 
                 }
             }
@@ -60,12 +56,11 @@ public class SchedulerRegistry {
                     Map<String, String> outboundPropDetails = outboundProps.getValue();
                     ThreadPoolTaskScheduler exec = new ThreadPoolTaskScheduler();
                     exec.initialize();
-                    exec.schedule(new Runnable() {
-                        @Override
-                        public void run() {
-                            service.transferFilesToRemote(outboundPropDetails.get("remoteDir"), outboundPropDetails.get("localDir"), outboundPropDetails.get("tempDir"), outboundPropDetails.get("archDir"), serverName);
-                        }
-                    }, new CronTrigger(outboundPropDetails.get("schedule")));
+                    exec.schedule(() -> service.transferFilesToRemote(outboundPropDetails.get("remoteDir"),
+                                                                        outboundPropDetails.get("localDir"),
+                                                                        outboundPropDetails.get("tempDir"),
+                                                                        outboundPropDetails.get("archDir"), serverName),
+                                        new CronTrigger(outboundPropDetails.get("schedule")));
 
                 }
             }
