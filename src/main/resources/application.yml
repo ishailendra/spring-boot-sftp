@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: sftp-processor
+
+sftp:
+  inbound:
+    schedule: 0 */5 * * * *
+    remote:
+      dir: /home/ec2-user/sftp/inbound/
+    local:
+      dir: src/main/resources/in/local/
+  outbound:
+    local:
+      dir: src/main/resources/out/local/
+    remote:
+      dir: /home/ec2-user/sftp/outbound/
+    schedule: 0 */5 * * * *
+  host: ec2-34-236-145-22.compute-1.amazonaws.com
+  port: 22
+  username: ec2-user
+  privateKeyPath: "C:\\Users\\ssing\\Downloads\\sftptester.pem"

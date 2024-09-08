@@ -1,0 +1,26 @@
+nohup sudo docker compose -f homeserver/lazytainer/docker-compose.yml up --build -d >> homeserver/lazytainer/nouhup_lazytainer.out 2>&1
+ tail -f homeserver/lazytainer/nouhup_lazytainer.out
+ ps aux | grep nohup
+
+
+
+
+
+SFTP
+SFTP is a network protocol that provides file access, file transfer, and file management over any reliable data streams
+Operates over a single port (usually port 22), thus easier to setup firewall configuration.
+Uses SSH for encryption, providing a high level of security for both commands and data.
+Preferred for secure file transfers, especially in environments where security is a priority.
+
+FTP
+FTP is a standard communication protocol used for the transfer of computer files from a server to a client on a computer network. 
+Uses multiple ports (port 21 for commands and other ports for data transfer), thus complicating firewall configuration.
+No encryption, making it vulnerable to interception and attacks.
+Suitable for transferring non-sensitive data or in controlled environments where security is not a concern.
+
+FTPS
+FTPS (also known as FTP-SSL and FTP secure) is an extension to the commonly used File Transfer Protocol (FTP) that adds support for the Transport Layer Security (TLS), and formerly, the Secure Sockets Layer (SSL).
+Uses multiple ports (port 21 for commands and other ports for data transfer), thus complicating firewall configuration.
+Adds SSL/TLS encryption to FTP, securing the data during transfer.
+Good for environments needing encryption but still relying on the traditional FTP protocol.
+
